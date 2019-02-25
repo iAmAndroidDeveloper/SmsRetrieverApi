@@ -1,0 +1,21 @@
+/*
+ *
+ * Add this in Menifest file
+ *
+ */
+
+<receiver
+       android:name=".smsrecever.MySMSBroadCastReceiver"
+       android:exported="true">
+         <intent-filter>
+             <action android:name="com.google.android.gms.auth.api.phone.SMS_RETRIEVED" />
+         </intent-filter>
+</receiver>
+
+/*
+ * Add this in App level gradle with latest verson
+ */
+ 
+  implementation 'com.google.android.gms:play-services-base:16.1.0'
+  implementation 'com.google.android.gms:play-services-auth-api-phone:16.0.0'
+  
