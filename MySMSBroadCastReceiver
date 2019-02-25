@@ -1,0 +1,48 @@
+
+/*
+ *
+ * This was fire for receive OTP.
+ *
+ */
+
+public class MySMSBroadCastReceiver extends BroadcastReceiver {
+
+    String otp;
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        if (SmsRetriever.SMS_RETRIEVED_ACTION.equals(intent.getAction())) {
+            Bundle extras = intent.getExtras();
+            Status status = (Status) extras.get(SmsRetriever.EXTRA_STATUS);
+
+            switch (status.getStatusCode()) {
+                case CommonStatusCodes.SUCCESS:
+                    // Get SMS message contents
+                    String message = (String) extras.get(SmsRetriever.EXTRA_SMS_MESSAGE);
+                 //   KLog.e("Message", message);
+
+                    Pattern pattern = Pattern.compile("\\d{4}");
+                    Matcher matcher = pattern.matcher(message);
+
+                    if (matcher.find()) {
+
+                        otp =matcher.group(0);   // here abcd contains otp which is in number format
+                        //Pass on the text to our listener.
+                        Intent smsIntent = new Intent("otp");
+                        smsIntent.putExtra("message", otp);
+                        LocalBroadcastManager.getInstance(context).sendBroadcast(smsIntent);
+
+                    }
+
+                    break;
+                case CommonStatusCodes.TIMEOUT:
+                  //  KLog.e("Time out", "timed out (5 minutes)");
+                    break;
+            }
+
+        }
+
+    }
+
+}
+
